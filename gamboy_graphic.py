@@ -50,6 +50,7 @@ yoshi = pygame.image.load('photos/yoshi.png')
 star_man = pygame.image.load('photos/star_man.png')
 musk = pygame.image.load('photos/elon_musk.png')
 
+#list of all the sprites
 sprite_list = [link,kirby,mario,pikachu,charmander,megaman,donkeykong,yoshi]
 
 #sounds
@@ -68,6 +69,7 @@ song_num = 0
 BIG_FONT = pygame.font.Font(None,50)
 SMALL_FONT = pygame.font.Font(None, 25)
 
+#drawing function
 def draw_alien(a):
     x = a[0]
     y = a[1]
@@ -158,7 +160,7 @@ for i in range(20):
     sprites.append(a)
 
 #displays gameboy on
-def game_on(xpos):
+def display_game(xpos):
         pygame.draw.rect(screen,BLACK,[300,70,240,180])
         
         #stars
@@ -188,7 +190,8 @@ speedx = 0
 while not done:
     #keeps checking and loading the song
     song = song_list[song_num]
-    
+
+    #key event processing
     for event in pygame.event.get():
         
         
@@ -198,24 +201,29 @@ while not done:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 powered_on = not powered_on
+            #gets rid of instructions
             elif event.key == pygame.K_RETURN:
                 show_instruction = False
+            #moves invader
             elif event.key == pygame.K_RIGHT:
                 speedx = 5
             elif event.key == pygame.K_LEFT:
                 speedx = -5
+            #shoots laser(if game is on)
             elif event.key == pygame.K_UP and powered_on:
                 shoot = True
                 lazer.play()
+            #musk mode
             elif event.key == pygame.K_m:
                 musk_mode = not musk_mode
+            #plays next song
             elif event.key == pygame.K_x:
                 song_num += 1
                 if song_num >= len(song_list):
                     song_num = 0
                 song = song_list[song_num]
                 play_music()
-                
+            #plays music 
             elif event.key == pygame.K_z:
                 if music_playing:
                     pygame.mixer.pause()
@@ -225,6 +233,7 @@ while not done:
                     music_playing = True
                 
         elif event.type == pygame.KEYUP:
+            #stops moving if you lift up key
             if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
                 speedx = 0
 
@@ -305,7 +314,7 @@ while not done:
     if musk_mode:
         screen.blit(musk, [300,70])
     elif powered_on:
-        game_on(xpos)
+        display_game(xpos)
         
         #draw bullets
         for b in bullets:
